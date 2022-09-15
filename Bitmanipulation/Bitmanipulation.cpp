@@ -3,6 +3,9 @@ using namespace std;
 
 // ~0 = -1
 // 2^i = 1<<i
+/* SWAP Adjacent bits 
+    (((x & 0b10101010) >> 1) | ((x & 0b01010101) << 1))<<endl; 
+*/
 
 int getIthbits(int num, int i) {
     int mask = (1<<i);
@@ -61,6 +64,16 @@ int powerOfTwo(int num) {
     }
 }
 
+int countunsetBits(int& num){
+    int count = 0;
+    for(int i = 1; i <= num; i=i<<1){
+        if((i & num) == 0){
+            count++;
+        }
+    }
+    return count;
+}
+
 int countSetBits1(int num) {            // Time Complexity: O(log(N))
     int count = 0;                      // No. of times in for loop for 8 = 3
     while(num>0) {
@@ -77,6 +90,30 @@ int countSetBits2(int num) {            // Fastest Method for Set bit count
         count++;
     }
     return count;
+}
+
+int remRightmostSetBit(int i){
+    i -= (i&-i);
+	return i;
+}
+
+// A method to multiply two numbers using Russian Peasant method
+unsigned int russianPeasant(unsigned int a, unsigned int b)
+{
+	int res = 0; // initialize result
+
+	// While second number doesn't become 1
+	while (b > 0)
+	{
+		// If second number becomes odd, add the first number to result
+		if (b & 1)
+			res = res + a;
+
+		// Double the first number and halve the second number
+		a = a << 1;
+		b = b >> 1;
+	}
+	return res;
 }
 
 int fastExponentiation(int a, int num) {
@@ -106,6 +143,39 @@ int dec2Binary(int num) {
     return ans;
 }
 
+int longestGap(int k) {
+    int cnt = 0;
+    int flag = 0;
+    int maxm = -1;
+    while(k) {
+        if(not(k & 1)) {
+            cnt += 1;
+            if(!flag) {
+                maxm = -1;
+            } else {
+                maxm = max(maxm, cnt); 
+            }
+            k = k >> 1;
+        } else {
+            flag = ~flag;
+            cnt = 0;
+            maxm = max(maxm, cnt);
+            k = k >> 1;    
+        }
+    }
+    return maxm;
+}
+
+int reversebit(int num){
+    unsigned int rev=0, i, bitsize=sizeof(num)*8;
+    for(i=0; i<bitsize; i++){
+        if(num&(1<<i)){
+            rev |= 1<<(bitsize-1-i);
+        }
+    }
+    return rev;
+}
+
 int main() {
     int num, i, j, v, k, choice, m;
     v=0;    // To set val for ith bit
@@ -127,15 +197,16 @@ int main() {
         cout<<"9. Detect Power of Two"<<endl;
         cout<<"10. Count number of set bits"<<endl;
         cout<<"11. Decimal to Binary Conversion"<<endl;
-        cout<<"12. Quit"<<endl;
+        cout<<"12. Longest Gap/zeroes inbetween two 1 bits in number"<<endl;
+        cout<<"13. Quit"<<endl;
         label:
             cout<<"Enter your Operation choice"<<endl;
             cin>>choice;
-        if (choice == 12) {
+        if (choice == 13) {
             cout<<"End of Bit Manipulation Program. Thank you!!!"<<endl;
             break;
         }
-        if (choice > 12 || choice < 1) {
+        if (choice > 13 || choice < 1) {
             cout<<"Invalid User Choice of Operation. Try again"<<endl;
             goto label;
         }
@@ -173,6 +244,8 @@ int main() {
             case 10: cout<<"Number of set bits in "<<num<<" is "<<countSetBits2(num)<<endl;
                     break;
             case 11: cout<<"Binary equivalent of decimal number "<<num<<" is "<<dec2Binary(num)<<endl;
+                    break;
+            case 12:cout<<"Longest Gap inbetween two 1 bits in binary number form: "<<longestGap(num)<<endl;
                     break;
             default: cout<<"Invalid User Choice"<<endl;
                     break;
