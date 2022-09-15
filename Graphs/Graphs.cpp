@@ -137,7 +137,7 @@ void Graph::dfshelper(int node, bool *visited){
 
 void Graph::dfs(int source){
     bool *visited = new bool[V]{0};
-    cout<<"##################### Breadth First Search ############################"<<endl;
+    cout<<"##################### Depth First Search ############################"<<endl;
     dfshelper(source, visited);
     cout<<endl;
 }
